@@ -25,7 +25,7 @@ module.exports = env => ({
   ],
   output: {
     path: path.resolve(__dirname, './dist/view'),
-    publicPath: env ? "/admin/" : "/",
+    publicPath: "<routePrefix>/static/",
     filename: `[name].${env ? "[chunkHash]" : "bundle"}.js`
   },
   module: {

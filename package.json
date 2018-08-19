@@ -38,6 +38,10 @@
     "webpack-dev-server": "^3.0.0",
     "webpack-merge": "^4.1.4"
   },
+  "keywords": [
+    "typeorm", "typeorm-admin", "typescript", "admin", "ORM Admin"
+  ],
+  "main": "dist/index.js",
   "scripts": {
     "start": "concurrently \"tsc -w\" \"webpack\"",
     "build": "tsc && webpack --config webpack.config.prod.js"
