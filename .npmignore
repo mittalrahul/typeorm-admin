@@ -1,0 +1,11 @@
+# Installed modules
+node_modules/
+
+# Source code
+*.ts
+!*.d.ts
+view/
+
+# Config Files
+webpack*
+tsconfig.json
