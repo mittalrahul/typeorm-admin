@@ -1,10 +1,15 @@
-const path = require("path"); 
-const express = require("express");
-const fs = require("fs");
-import app from "./middleware/typeorm-admin";
-import adminWebapp from "./middleware/webapp";
+import express from "express";
+import path from "path"; 
+import fs from "fs";
 
-export default function(authCheck: Function, login: Function, logout: Function, routePrefix="/admin") {
+import adminMetaData from "./admin-meta-data";
+import adminWebapp from "./middleware/webapp";
+import apiRoutesFactory from "./api";
+
+export default function(connectionObj: any, authCheck: Function, login: Function, logout: Function, routePrefix="/admin") {
+    const app = express();
+    adminMetaData.connection = connectionObj;
+    
     app.engine("html", function(filepath, options, callback) {
         fs.readFile(filepath, function(error, content) {
             if(error) {
@@ -21,18 +26,14 @@ export default function(authCheck: Function, login: Function, logout: Function, 
     
     app.set("view engine", "html");
     
+    app.use(`${routePrefix}/api`, apiRoutesFactory(authCheck, login, logout));
+    
+    // Serve webapp
     app.use(`${routePrefix}/static`, express.static(path.join(__dirname, "./view")));
-    
-    app.post(`${routePrefix}/login`, login);
-    
-    app.use(authCheck);
-    
-    app.get(`${routePrefix}/logout`, logout);
-
     app.use(routePrefix, adminWebapp(routePrefix));
     
     return app;
 };
 
 export {EntityAdmin} from "./decorators/EntityAdmin";
-export {ColumnAdmin} from "./decorators/ColumnAdmin";
+export * from "./decorators/ColumnAdmin";
